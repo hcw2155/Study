@@ -11,31 +11,36 @@ def correct(s):
 
 def separation(s): # 분리 과정
     cnt = [0,0]
-    result=[]
+    u = ''
+    v = ''
     for i in range(0,len(s)):
         if s[i] == '(':
             cnt[0] += 1
         elif s[i] == ')':
             cnt[1] += 1
         if cnt[0] == cnt[1]:
-            result.append(s[:i+1])
-            result.append(s[i+1:])
+            u = s[:i+1]
+            v = s[i+1:]
             break
-    return result
+    return [u,v]
 
 def do2(p):
     answer = ''
     result =  separation(p)
+    u = result[0]
+    v = result[1]
     while True:
-        if correct(result[0]):
-            answer += result[0]
-            if len(result[1]) != 0:
-                result = separation(result[1])
-            else:
-                break
-        else:
+        if correct(u) == True:
+            answer += u
+            if v == '':
+                return [answer,u,v] 
+            result = separation(v)
+            u = result[0]
+            v = result[1]
+        elif correct(u) == False:
             break
-    return [answer,result[0],result[1]]
+    print('answer:',answer,'u:',u,'v:',v,'here')
+    return [answer,u,v]
 
 def last(s):
     result = ''
@@ -52,18 +57,16 @@ def last(s):
 
 def solution(p):
     answer = ''
+    # do_2 -> [answer,u,v]
     # 빈 문자열 처리
     if correct(p): # 올바르면 반환
         return p
     else: # 올바르지 않으면 2단계 수행
         result = do2(p)
-        print(result,'this is result, 2 phase')
-        answer = result[0] + '(' + do2(result[2])[1] + ')'
-        print(answer,'this is answer1')
+        print(result,'************')
+        answer = result[0] + '(' + (do2(result[2])[1]) + ')'
         answer += last(result[1])
-        print('***',result[1],last(result[1]))
-        print(answer,'this is answer2')
-    print(answer)
+    print('answer:',answer)
 
-p = "()))((()"
+p = "()"
 solution(p)
