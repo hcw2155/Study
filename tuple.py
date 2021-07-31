@@ -1,26 +1,28 @@
 def solution(s):
-    a = []
-    natural_number = ['0','1','2','3','4','5','6','7','8','9']
+    new = []
+    inside = []
     temp = ''
-    d = [0] * 100001
-
+    cnt=0
     for i in s[1:-1]:
-        if i in natural_number:
-            temp += i
-            d[int(temp)] += 1
-        else:
-            if temp != '' and int(temp) not in a:
-                a.append(int(temp))
+        if i == '{':
+            cnt = 1
+        elif i == '}':
+            inside.append(int(temp))
+            new.append(inside)
             temp = ''
-    result = []
-    for i in a:
-       result.append((i,d[i]))
-    result = sorted(result, key=lambda result: result[1], reverse=True)
-    real_answer = []
-    for i in result:
-        real_answer.append(i[0])
-    return real_answer
-
-    
-s = "{{2},{2,1},{2,1,3},{2,1,3,4}}"
-print(solution(s))
+            inside = []
+            cnt = 0
+        elif i == ',':
+            if cnt == 1:
+                inside.append(int(temp))
+            temp =''
+        else:
+            temp += i
+    new = sorted(new, key=len)
+    print(new)
+    answer = []
+    for i in new:
+        for j in i:
+            if j not in answer:
+                answer.append(j)
+    return answer
