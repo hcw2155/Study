@@ -26,3 +26,4 @@ def solution(s):
             if j not in answer:
                 answer.append(j)
     return answer
+
