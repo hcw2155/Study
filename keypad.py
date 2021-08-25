@@ -34,7 +34,7 @@ def solution(numbers, hand):
                     left = str(number)
                 else:
                     answer += 'R'
-                    rigt = str(number)
+                    right = str(number)
     print(dict)
     return answer                
             
