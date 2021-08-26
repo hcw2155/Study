@@ -1,38 +1,24 @@
 def solution(m, n, board):
     answer = 0
-    p = [[0 for _ in range(len(board[0]))] for _ in range(len(board))]
-    new = []
-    for i in range(0,m):
-        tmp = []
-        for j in range(0,n):
-            tmp.append(board[i][j])
-        new.append(tmp)
-
+    board = list(map(list,zip(*board)))
+    m,n = n,m
     while True:
-        check = []
+        p = [i[:] for i in board]
+        temp = answer
         for i in range(0,m-1):
             for j in range(0,n-1):
-                # if new[i][j] in block:
-                if new[i][j] != 'X' and new[i][j] == new[i+1][j] == new[i][j+1] == new[i+1][j+1]:
-                    check.append((i,j))
-                    check.append((i,j+1))
-                    check.append((i+1,j))
-                    check.append((i+1,j+1))
-        if len(check) == 0:
-            break
-        else:
-            answer += len(set(check))
-            for c in check:
-                new[c[0]][c[1]] = 'X'
-            for c in reversed(check): # bottom-up
-                check_n = c[0] - 1
-                put_n = c[0]
-                while check_n >= 0:
-                    if new[put_n][c[1]] == 'X' and new[check_n][c[1]] != 'X':
-                        new[put_n][c[1]] = new[check_n][c[1]]
-                        new[check_n][c[1]] = 'X'
-                        put_n -= 1
-                    check_n -= 1
+                print(i,j)
+                if board[i][j] != 'X' and board[i][j] == board[i+1][j] == board[i][j+1] == board[i+1][j+1]:
+                    p[i][j] = 1
+                    p[i][j+1] = 1
+                    p[i+1][j] = 1
+                    p[i+1][j+1] = 1
+        print(p,board)
+        for idx, k in enumerate(p):
+            cnt1 = k.count(1)
+            answer += cnt1
+            board[idx] = ['X'] * cnt1 + [i for i in k if i != 1]
+        if temp == answer: break
     return answer
 
 m,n=4,5
